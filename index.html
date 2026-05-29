@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo de Productos INBURSA 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #1B4F8A;
+  --dark: #0D1B2A;
+  --gold: #C9A227;
+  --light: #F0F4F8;
+  --border: #d1dce8;
+  --nav-w: 240px;
+  --fh: 'Barlow Condensed', sans-serif;
+  --fb: 'IBM Plex Sans', sans-serif;
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--fb); background: var(--light); color: var(--dark); display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+#sidebar {
+  position: fixed; top: 0; left: 0;
+  width: var(--nav-w); height: 100vh;
+  background: var(--dark); overflow-y: auto;
+  z-index: 200; display: flex; flex-direction: column;
+  transition: transform .3s;
+}
+#sidebar::-webkit-scrollbar { width: 3px; }
+#sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 2px; }
+.sb-logo { padding: 16px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.sb-logo img { width: 100%; height: 64px; object-fit: cover; object-position: top; border-radius: 4px; }
+.sb-head { font-family: var(--fh); font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); padding: 12px 16px 6px; }
+.nav-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px; color: rgba(255,255,255,.65);
+  text-decoration: none; font-family: var(--fh); font-size: 13px; font-weight: 600;
+  border-left: 3px solid transparent; transition: all .15s;
+}
+.nav-link:hover, .nav-link.active { color: #fff; background: rgba(255,255,255,.06); border-left-color: var(--nc, var(--gold)); }
+
+/* MAIN */
+#main { margin-left: var(--nav-w); flex: 1; }
+
+/* HERO */
+#hero { position: relative; min-height: 320px; background: var(--dark); display: flex; align-items: center; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .3; }
+.hero-ov { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(27,79,138,.88), rgba(13,27,42,.93)); }
+.hero-cnt { position: relative; z-index: 1; padding: 48px 52px; }
+.hero-eyebrow { font-family: var(--fh); font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.hero-title { font-family: var(--fh); font-size: clamp(38px,5vw,64px); font-weight: 800; color: #fff; line-height: 1.05; margin-bottom: 12px; }
+.hero-title em { color: var(--gold); font-style: normal; }
+.hero-sub { font-size: 14px; color: rgba(255,255,255,.7); max-width: 460px; line-height: 1.6; margin-bottom: 28px; }
+.hero-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+.hstat-n { display: block; font-family: var(--fh); font-size: 28px; font-weight: 800; color: var(--gold); }
+.hstat-l { font-size: 10px; color: rgba(255,255,255,.5); letter-spacing: 1px; text-transform: uppercase; }
+
+/* OVERVIEW GRID */
+#overview { background: white; padding: 32px 40px 36px; border-bottom: 1px solid var(--border); }
+.ov-title { font-family: var(--fh); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--blue); margin-bottom: 16px; }
+.sec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+.sec-card { background: var(--light); border-radius: 7px; padding: 14px 10px; text-align: center; text-decoration: none; border: 2px solid transparent; transition: all .15s; display: block; }
+.sec-card:hover { border-color: var(--cc); background: white; transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,.1); }
+.sc-icon { font-size: 22px; display: block; margin-bottom: 5px; }
+.sc-title { font-family: var(--fh); font-size: 11.5px; font-weight: 700; color: var(--cc); line-height: 1.3; }
+
+/* CATALOG SECTION */
+.cat-section { background: white; margin-bottom: 6px; scroll-margin-top: 0; }
+
+.sec-banner { position: relative; min-height: 130px; display: flex; align-items: center; overflow: hidden; }
+.sec-banner-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .18; }
+.sec-banner-inner { position: relative; z-index: 1; padding: 24px 40px; display: flex; align-items: center; gap: 16px; width: 100%; }
+.sec-banner-icon { font-size: 40px; flex-shrink: 0; }
+.sec-banner-text h2 { font-family: var(--fh); font-size: clamp(24px,3.5vw,42px); font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: .5px; text-shadow: 0 2px 6px rgba(0,0,0,.35); line-height: 1; margin-bottom: 4px; }
+.sec-banner-meta { font-size: 11px; color: rgba(255,255,255,.65); font-family: var(--fh); letter-spacing: 1px; }
+
+/* PAGE VIEWER */
+.page-viewer { padding: 20px 40px 0; }
+.pv-controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 10px; flex-wrap: wrap; }
+.pv-info { font-family: var(--fh); font-size: 12px; color: #666; }
+.pv-info strong { color: var(--dark); }
+.pv-btns { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.btn-nav {
+  background: var(--light); border: 1px solid var(--border); border-radius: 5px;
+  padding: 6px 12px; font-family: var(--fh); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .12s; color: var(--dark);
+}
+.btn-nav:hover:not(:disabled) { background: white; border-color: #999; }
+.btn-nav:disabled { opacity: .3; cursor: not-allowed; }
+.zoom-sep { width: 1px; height: 24px; background: var(--border); margin: 0 4px; }
+.zoom-lbl { font-family: var(--fh); font-size: 13px; min-width: 42px; text-align: center; color: var(--dark); }
+
+/* THE PAGE DISPLAY - this is the key fix */
+.page-display {
+  position: relative;
+  width: 100%;
+  /* Fixed viewport height */
+  height: calc(100vh - 250px);
+  min-height: 380px;
+  background: #ccc;
+  border-radius: 6px;
+  /* HARD clip - nothing can escape */
+  overflow: hidden;
+}
+.page-scroller {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #ccc;
+}
+.page-scroller.allow-x { overflow-x: auto; }
+.page-scroller img {
+  display: block;
+  /* This is the magic: image fits scroller width, natural height */
+  width: 100%;
+  height: auto;
+  /* Transition for smooth zoom */
+  transition: width .15s ease;
+}
+
+/* THUMBNAILS */
+.thumb-strip { display: flex; gap: 5px; overflow-x: auto; padding: 8px 0 4px; scrollbar-width: thin; }
+.thumb-strip::-webkit-scrollbar { height: 3px; }
+.thumb-strip::-webkit-scrollbar-thumb { background: var(--border); }
+.thumb {
+  flex-shrink: 0;
+  width: clamp(56px, 7vw, 78px);
+  border: 2px solid var(--border);
+  border-radius: 3px; overflow: hidden;
+  cursor: pointer; transition: all .12s; position: relative;
+}
+.thumb:hover { border-color: #888; transform: translateY(-1px); }
+.thumb.active { border-color: var(--sc, var(--blue)); }
+.thumb img { width: 100%; display: block; }
+.thumb-num { position: absolute; bottom: 1px; right: 2px; font-size: 8px; background: rgba(0,0,0,.5); color: white; padding: 1px 3px; border-radius: 2px; font-family: var(--fh); }
+
+/* Loading */
+.loading-ph { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 48px; color: #888; position: absolute; inset: 0; justify-content: center; background: #e0e0e0; border-radius: 6px; }
+.spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Overlay nav arrows */
+.pno { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,.4); color: white; border: none; width: 36px; height: 52px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 3px; transition: background .12s; opacity: 0; pointer-events: none; z-index: 10; }
+.page-display:hover .pno { opacity: 1; pointer-events: all; }
+.pno:hover { background: rgba(0,0,0,.65); }
+.pno-prev { left: 6px; }
+.pno-next { right: 6px; }
+
+/* PDF BAR */
+.pdf-bar { margin: 16px 40px 24px; background: var(--light); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.pdf-bar-l { display: flex; align-items: center; gap: 12px; }
+.pdf-bar-icon { font-size: 26px; }
+.pdf-bar-text strong { font-family: var(--fh); font-size: 14px; font-weight: 700; display: block; }
+.pdf-bar-text small { font-size: 11px; color: #666; }
+.btn-pdf { display: flex; align-items: center; gap: 6px; padding: 9px 20px; border: none; border-radius: 6px; color: white; font-family: var(--fh); font-size: 14px; font-weight: 700; cursor: pointer; transition: all .15s; white-space: nowrap; }
+.btn-pdf:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,.22); filter: brightness(1.08); }
+
+/* MODAL */
+#pdf-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 9000; align-items: center; justify-content: center; }
+#pdf-modal.open { display: flex; }
+.modal-box { background: white; border-radius: 12px; padding: 32px; max-width: 420px; width: 92%; text-align: center; animation: popIn .22s ease; }
+@keyframes popIn { from{transform:scale(.88);opacity:0} to{transform:scale(1);opacity:1} }
+.modal-icon { font-size: 44px; margin-bottom: 10px; display: block; }
+.modal-title { font-family: var(--fh); font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+.modal-sub { font-size: 13px; color: #666; margin-bottom: 18px; }
+.modal-prog { background: var(--light); height: 5px; border-radius: 3px; overflow: hidden; margin-bottom: 10px; }
+.modal-prog-bar { height: 100%; background: var(--blue); border-radius: 3px; transition: width .3s; }
+.modal-step { font-size: 11px; color: #999; font-style: italic; }
+.modal-btns { display: flex; gap: 8px; justify-content: center; margin-top: 18px; }
+.btn-dl { background: var(--blue); color: white; border: none; border-radius: 6px; padding: 10px 24px; font-family: var(--fh); font-size: 14px; font-weight: 700; cursor: pointer; }
+.btn-cl { background: var(--light); border: none; border-radius: 6px; padding: 10px 16px; font-family: var(--fh); font-size: 13px; cursor: pointer; }
+
+/* MOBILE */
+#menu-btn { display: none; position: fixed; top: 10px; left: 10px; z-index: 1100; background: var(--dark); color: white; border: none; border-radius: 6px; width: 40px; height: 40px; font-size: 18px; cursor: pointer; align-items: center; justify-content: center; }
+#sb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 190; }
+
+footer { background: var(--dark); color: rgba(255,255,255,.4); text-align: center; padding: 24px 40px; font-size: 11px; line-height: 1.9; }
+
+/* VERSION BADGE */
+#vbadge { position: fixed; bottom: 6px; right: 6px; background: #111; color: #0f0; font-family: monospace; font-size: 9px; padding: 2px 6px; border-radius: 3px; z-index: 9999; opacity: .6; }
+
+@media(max-width:860px){
+  :root { --nav-w: 0px }
+  #menu-btn { display: flex }
+  #sidebar { transform: translateX(-240px); width: 240px; }
+  #sidebar.open { transform: translateX(0) }
+  #sb-overlay.open { display: block }
+  #main { margin-left: 0 }
+  .hero-cnt { padding: 48px 20px 32px }
+  #overview, .page-viewer, .pdf-bar { padding-left: 18px; padding-right: 18px; }
+  .sec-banner-inner { padding: 20px 18px; }
+  .pdf-bar { margin: 14px 18px 20px; }
+  .page-display { height: calc(100vh - 220px); min-height: 300px; }
+}
+@media(max-width:480px){
+  .sec-grid { grid-template-columns: repeat(3,1fr); gap: 6px; }
+  .hero-stats { gap: 18px; }
+  .pdf-bar { flex-direction: column; align-items: flex-start; }
+  .btn-pdf { width: 100%; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<div id="vbadge">v15-url-based</div>
+<button id="menu-btn" onclick="toggleMenu()">☰</button>
+<div id="sb-overlay" onclick="closeMenu()"></div>
+
+<nav id="sidebar">
+  <div class="sb-logo"><img id="sb-img" src="catalogo_inbursa/pages/p-001.jpg" alt="INBURSA"></div>
+  <div class="sb-head">Secciones del Catálogo</div>
+  <a href="#afore"          class="nav-link" style="--nc:#1B4F8A">🏦 Afore</a>
+  <a href="#cuentas"        class="nav-link" style="--nc:#0D6B3E">💳 Cuentas</a>
+  <a href="#inversiones"    class="nav-link" style="--nc:#7B3FA0">📈 Inversiones</a>
+  <a href="#autos"          class="nav-link" style="--nc:#8B2FC9">🚗 Autos</a>
+  <a href="#danos"          class="nav-link" style="--nc:#C0392B">🛡️ Daños</a>
+  <a href="#gastos"         class="nav-link" style="--nc:#16A085">🏥 Gastos Médicos</a>
+  <a href="#vida"           class="nav-link" style="--nc:#E91E63">❤️ Vida</a>
+  <a href="#exclusivos"     class="nav-link" style="--nc:#8D6E2A">⭐ Seguros Exclusivos</a>
+  <a href="#creditos"       class="nav-link" style="--nc:#2471A3">💰 Créditos</a>
+  <a href="#tarjetas"       class="nav-link" style="--nc:#1A5276">💎 Tarjetas de Crédito</a>
+  <a href="#nomina"         class="nav-link" style="--nc:#117A65">📋 Nómina</a>
+  <a href="#arrendamiento"  class="nav-link" style="--nc:#6C3483">🏢 Arrendamiento</a>
+  <a href="#financiamiento" class="nav-link" style="--nc:#1F618D">🏛️ Financiamiento</a>
+  <a href="#descuento"      class="nav-link" style="--nc:#7D6608">🏷️ Descuento</a>
+  <a href="#fianzas"        class="nav-link" style="--nc:#4A235A">📜 Fianzas</a>
+  <a href="#servicios"      class="nav-link" style="--nc:#154360">🔧 Servicios</a>
+  <a href="#faq"            class="nav-link" style="--nc:#1B2631">❓ Preguntas Frecuentes</a>
+</nav>
+
+<main id="main">
+<section id="hero">
+  <div class="hero-bg" style="background-image:url('catalogo_inbursa/pages/p-001.jpg')"></div>
+  <div class="hero-ov"></div>
+  <div class="hero-cnt">
+    <div class="hero-eyebrow">Grupo Financiero</div>
+    <h1 class="hero-title">Catálogo de<br><em>Productos</em><br>INBURSA</h1>
+    <p class="hero-sub">Más de 60 años de experiencia ofreciendo la máxima calidad en productos financieros en México.</p>
+    <div class="hero-stats">
+      <div><span class="hstat-n">306</span><span class="hstat-l">Páginas</span></div>
+      <div><span class="hstat-n">17</span><span class="hstat-l">Secciones</span></div>
+      <div><span class="hstat-n">100+</span><span class="hstat-l">Productos</span></div>
+      <div><span class="hstat-n">60+</span><span class="hstat-l">Años</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="overview">
+  <div class="ov-title">Navega por sección</div>
+  <div class="sec-grid">
+    <a href="#afore"          class="sec-card" style="--cc:#1B4F8A"><span class="sc-icon">🏦</span><div class="sc-title">Afore</div></a>
+    <a href="#cuentas"        class="sec-card" style="--cc:#0D6B3E"><span class="sc-icon">💳</span><div class="sc-title">Cuentas</div></a>
+    <a href="#inversiones"    class="sec-card" style="--cc:#7B3FA0"><span class="sc-icon">📈</span><div class="sc-title">Inversiones</div></a>
+    <a href="#autos"          class="sec-card" style="--cc:#8B2FC9"><span class="sc-icon">🚗</span><div class="sc-title">Autos</div></a>
+    <a href="#danos"          class="sec-card" style="--cc:#C0392B"><span class="sc-icon">🛡️</span><div class="sc-title">Daños</div></a>
+    <a href="#gastos"         class="sec-card" style="--cc:#16A085"><span class="sc-icon">🏥</span><div class="sc-title">Gastos Médicos</div></a>
+    <a href="#vida"           class="sec-card" style="--cc:#E91E63"><span class="sc-icon">❤️</span><div class="sc-title">Vida</div></a>
+    <a href="#exclusivos"     class="sec-card" style="--cc:#8D6E2A"><span class="sc-icon">⭐</span><div class="sc-title">Seguros Exclusivos</div></a>
+    <a href="#creditos"       class="sec-card" style="--cc:#2471A3"><span class="sc-icon">💰</span><div class="sc-title">Créditos</div></a>
+    <a href="#tarjetas"       class="sec-card" style="--cc:#1A5276"><span class="sc-icon">💎</span><div class="sc-title">Tarjetas de Crédito</div></a>
+    <a href="#nomina"         class="sec-card" style="--cc:#117A65"><span class="sc-icon">📋</span><div class="sc-title">Nómina</div></a>
+    <a href="#arrendamiento"  class="sec-card" style="--cc:#6C3483"><span class="sc-icon">🏢</span><div class="sc-title">Arrendamiento</div></a>
+    <a href="#financiamiento" class="sec-card" style="--cc:#1F618D"><span class="sc-icon">🏛️</span><div class="sc-title">Financiamiento</div></a>
+    <a href="#descuento"      class="sec-card" style="--cc:#7D6608"><span class="sc-icon">🏷️</span><div class="sc-title">Descuento</div></a>
+    <a href="#fianzas"        class="sec-card" style="--cc:#4A235A"><span class="sc-icon">📜</span><div class="sc-title">Fianzas</div></a>
+    <a href="#servicios"      class="sec-card" style="--cc:#154360"><span class="sc-icon">🔧</span><div class="sc-title">Servicios</div></a>
+    <a href="#faq"            class="sec-card" style="--cc:#1B2631"><span class="sc-icon">❓</span><div class="sc-title">Preguntas Frecuentes</div></a>
+  </div>
+</section>
+
+<div id="sections-container"></div>
+
+<footer>
+  <p>Catálogo de Productos INBURSA 2026 · Grupo Financiero Inbursa</p>
+  <p>Páginas reproducidas del documento original · Información sujeta a cambios</p>
+  <p>www.inbursa.com · 55 5447 8000 · 800 909 0000</p>
+</footer>
+</main>
+
+<div id="pdf-modal">
+  <div class="modal-box">
+    <span class="modal-icon" id="m-icon">📄</span>
+    <div class="modal-title" id="m-title">Generando PDF...</div>
+    <div class="modal-sub" id="m-sub">Preparando sección</div>
+    <div class="modal-prog"><div class="modal-prog-bar" id="m-bar" style="width:0%"></div></div>
+    <div class="modal-step" id="m-step">Iniciando...</div>
+    <div class="modal-btns" id="m-ok" style="display:none">
+      <button class="btn-dl" id="m-dl">⬇ Descargar</button>
+      <button class="btn-cl" onclick="closeModal()">Cerrar</button>
+    </div>
+    <div class="modal-btns" id="m-cancel">
+      <button class="btn-cl" onclick="closeModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SECTIONS = [
+  {id:'afore',          title:'Afore',                   icon:'🏦', color:'#1B4F8A', start:9,   end:11},
+  {id:'cuentas',        title:'Cuentas',                 icon:'💳', color:'#0D6B3E', start:12,  end:66},
+  {id:'inversiones',    title:'Inversiones',             icon:'📈', color:'#7B3FA0', start:67,  end:90},
+  {id:'autos',          title:'Autos',                   icon:'🚗', color:'#8B2FC9', start:91,  end:99},
+  {id:'danos',          title:'Daños',                   icon:'🛡️', color:'#C0392B', start:100, end:116},
+  {id:'gastos',         title:'Gastos Médicos',          icon:'🏥', color:'#16A085', start:117, end:142},
+  {id:'vida',           title:'Vida',                    icon:'❤️', color:'#E91E63', start:143, end:158},
+  {id:'exclusivos',     title:'Seguros Exclusivos',      icon:'⭐', color:'#8D6E2A', start:159, end:166},
+  {id:'creditos',       title:'Créditos',                icon:'💰', color:'#2471A3', start:167, end:202},
+  {id:'tarjetas',       title:'Tarjetas de Crédito',     icon:'💎', color:'#1A5276', start:203, end:233},
+  {id:'nomina',         title:'Nómina',                  icon:'📋', color:'#117A65', start:234, end:239},
+  {id:'arrendamiento',  title:'Arrendamiento',           icon:'🏢', color:'#6C3483', start:240, end:247},
+  {id:'financiamiento', title:'Financiamiento Bancario', icon:'🏛️', color:'#1F618D', start:248, end:254},
+  {id:'descuento',      title:'Descuento',               icon:'🏷️', color:'#7D6608', start:255, end:258},
+  {id:'fianzas',        title:'Fianzas',                 icon:'📜', color:'#4A235A', start:259, end:260},
+  {id:'servicios',      title:'Servicios',               icon:'🔧', color:'#154360', start:261, end:298},
+  {id:'faq',            title:'Preguntas Frecuentes',    icon:'❓', color:'#1B2631', start:299, end:306},
+];
+
+// Image base path - all images are JPG files in this folder
+const IMG_PATH = 'catalogo_inbursa/pages/';
+const pageUrl = (n) => `${IMG_PATH}p-${String(n).padStart(3,'0')}.jpg`;
+
+const curPage = {};   // current page index per section
+const zoomPct = {};   // zoom % per section (undefined = not set yet)
+
+// ── BUILD SECTION ELEMENTS ──
+function buildSections() {
+  const c = document.getElementById('sections-container');
+  SECTIONS.forEach(sec => {
+    curPage[sec.id] = 0;
+    const total = sec.end - sec.start + 1;
+    const el = document.createElement('section');
+    el.id = sec.id;
+    el.className = 'cat-section';
+    el.innerHTML = `
+      <div class="sec-banner" style="background:linear-gradient(135deg,${sec.color}dd,${sec.color}77)">
+        <div class="sec-banner-bg" style="background-image:url('${pageUrl(sec.start)}')"></div>
+        <div class="sec-banner-inner">
+          <div class="sec-banner-icon">${sec.icon}</div>
+          <div class="sec-banner-text">
+            <h2>${sec.title}</h2>
+            <div class="sec-banner-meta">Páginas ${sec.start}–${sec.end} · ${total} páginas del catálogo original</div>
+          </div>
+        </div>
+      </div>
+      <div class="page-viewer">
+        <div class="pv-controls">
+          <div class="pv-info">Página <strong id="pn-${sec.id}">1</strong> de <strong>${total}</strong></div>
+          <div class="pv-btns">
+            <button class="btn-nav" id="prev-${sec.id}" onclick="nav('${sec.id}',-1)" disabled>◀ Anterior</button>
+            <button class="btn-nav" id="next-${sec.id}" onclick="nav('${sec.id}',1)">Siguiente ▶</button>
+            <div class="zoom-sep"></div>
+            <button class="btn-nav" onclick="zoom('${sec.id}',-10)">−</button>
+            <span class="zoom-lbl" id="zl-${sec.id}">ajust.</span>
+            <button class="btn-nav" onclick="zoom('${sec.id}',10)">+</button>
+            <button class="btn-nav" onclick="zoomFit('${sec.id}')" title="Ajustar a pantalla" style="font-size:11px;padding:6px 8px">⤢</button>
+          </div>
+        </div>
+        <div class="page-display" id="pd-${sec.id}">
+          <div class="loading-ph" id="ph-${sec.id}"><div class="spinner"></div><span>Cargando...</span></div>
+          <div class="page-scroller" id="ps-${sec.id}" style="display:none">
+            <img id="pimg-${sec.id}" src="" alt="Página ${sec.start}" loading="lazy">
+          </div>
+          <button class="pno pno-prev" onclick="nav('${sec.id}',-1)">‹</button>
+          <button class="pno pno-next" onclick="nav('${sec.id}',1)">›</button>
+        </div>
+        <div class="thumb-strip" id="ts-${sec.id}" style="--sc:${sec.color}"></div>
+      </div>
+      <div class="pdf-bar">
+        <div class="pdf-bar-l">
+          <div class="pdf-bar-icon">📄</div>
+          <div class="pdf-bar-text">
+            <strong>Descargar — ${sec.title}</strong>
+            <small>${total} páginas del catálogo original</small>
+          </div>
+        </div>
+        <button class="btn-pdf" style="background:${sec.color}" onclick="genPDF('${sec.id}','${sec.title.replace(/'/g,"\\'")}','${sec.color}',${sec.start},${sec.end})">
+          ⬇ Descargar PDF
+        </button>
+      </div>
+    `;
+    c.appendChild(el);
+  });
+}
+
+// ── SHOW PAGE ──
+function showPage(id, idx) {
+  const sec = SECTIONS.find(s => s.id === id);
+  if (!sec) return;
+  const pages = sec.end - sec.start + 1;
+  idx = Math.max(0, Math.min(pages - 1, idx));
+  curPage[id] = idx;
+
+  const pgNum = sec.start + idx;
+  const img = document.getElementById('pimg-' + id);
+  const ph  = document.getElementById('ph-'   + id);
+  const ps  = document.getElementById('ps-'   + id);
+  const pn  = document.getElementById('pn-'   + id);
+
+  // Show loading briefly
+  if (ph) ph.style.display = 'flex';
+  if (ps) ps.style.display = 'none';
+
+  if (img) {
+    img.onload = () => {
+      if (ph) ph.style.display = 'none';
+      if (ps) ps.style.display = 'block';
+      // Auto-fit on first load of this section
+      if (zoomPct[id] === undefined) zoomFit(id);
+      else applyZoom(id);
+      // Scroll to top
+      if (ps) ps.scrollTop = 0;
+    };
+    img.onerror = () => {
+      if (ph) ph.innerHTML = '<span style="color:#c00;font-size:12px">Error cargando imagen</span>';
+    };
+    img.src = pageUrl(pgNum);
+    img.alt = `Página ${pgNum}`;
+  }
+
+  if (pn) pn.textContent = idx + 1;
+  document.getElementById('prev-' + id).disabled = (idx === 0);
+  document.getElementById('next-' + id).disabled = (idx === pages - 1);
+
+  // Highlight active thumb
+  const strip = document.getElementById('ts-' + id);
+  if (strip) {
+    strip.querySelectorAll('.thumb').forEach((t,i) => t.classList.toggle('active', i === idx));
+    const at = strip.querySelector('.thumb.active');
+    if (at) at.scrollIntoView({ inline:'center', behavior:'smooth', block:'nearest' });
+  }
+}
+
+// ── THUMBNAILS ──
+function buildThumbs(id) {
+  const sec = SECTIONS.find(s => s.id === id);
+  if (!sec) return;
+  const strip = document.getElementById('ts-' + id);
+  if (!strip || strip.children.length > 0) return;
+  for (let pg = sec.start; pg <= sec.end; pg++) {
+    const idx = pg - sec.start;
+    const div = document.createElement('div');
+    div.className = 'thumb' + (idx === 0 ? ' active' : '');
+    div.onclick = () => showPage(id, idx);
+    const img = document.createElement('img');
+    img.src = pageUrl(pg);
+    img.loading = 'lazy';
+    img.alt = `Pág.${pg}`;
+    const num = document.createElement('div');
+    num.className = 'thumb-num';
+    num.textContent = pg;
+    div.appendChild(img);
+    div.appendChild(num);
+    strip.appendChild(div);
+  }
+}
+
+function nav(id, dir) {
+  showPage(id, curPage[id] + dir);
+}
+
+// ── ZOOM ──
+function zoomFit(id) {
+  const img = document.getElementById('pimg-' + id);
+  const ps  = document.getElementById('ps-'  + id);
+  if (!img || !img.naturalWidth || !ps) {
+    zoomPct[id] = undefined; // retry on next load
+    return;
+  }
+  const cw = ps.clientWidth;
+  const ch = ps.clientHeight || (window.innerHeight - 250);
+  const byW = Math.floor(cw / img.naturalWidth * 100);
+  const byH = Math.floor(ch / img.naturalHeight * 100);
+  zoomPct[id] = Math.max(Math.min(byW, byH), 20);
+  applyZoom(id);
+}
+
+function zoom(id, delta) {
+  if (zoomPct[id] === undefined) zoomPct[id] = 100;
+  zoomPct[id] = Math.max(20, Math.min(300, zoomPct[id] + delta));
+  applyZoom(id);
+}
+
+function applyZoom(id) {
+  const pct = zoomPct[id] || 100;
+  const img = document.getElementById('pimg-' + id);
+  const lbl = document.getElementById('zl-'  + id);
+  const ps  = document.getElementById('ps-'  + id);
+  if (img) img.style.width = pct + '%';
+  if (lbl) lbl.textContent = pct + '%';
+  if (ps)  ps.classList.toggle('allow-x', pct > 100);
+}
+
+// ── INTERSECTION OBSERVER ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const id = e.target.id;
+    if (!SECTIONS.find(s => s.id === id)) return;
+    // Load first page + thumbs
+    const img = document.getElementById('pimg-' + id);
+    if (img && !img.src.includes('p-')) {
+      showPage(id, 0);
+      buildThumbs(id);
+    }
+    // Nav highlight
+    document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+    const lnk = document.querySelector(`.nav-link[href="#${id}"]`);
+    if (lnk) lnk.classList.add('active');
+  });
+}, { threshold: 0.05 });
+
+// ── PDF GENERATION ──
+let pdfBlob = null, pdfName = '';
+
+async function genPDF(id, title, color, start, end) {
+  pdfBlob = null; pdfName = title;
+  openModal();
+  setModal('📄', `Generando: ${title}`, 'Construyendo documento con páginas del catálogo...', 20, 'Preparando imágenes...');
+
+  // Build HTML with all img tags referencing the actual URLs
+  const total = end - start + 1;
+  let imgs = '';
+  for (let pg = start; pg <= end; pg++) {
+    imgs += `<div style="page-break-inside:avoid;margin-bottom:8px">
+      <img src="${pageUrl(pg)}" style="width:100%;display:block;border:1px solid #ddd;border-radius:3px">
+      <div style="text-align:right;font-size:9px;color:#aaa;padding:2px 4px">pág. ${pg}</div>
+    </div>\n`;
+  }
+
+  setModal('📄', `Generando: ${title}`, 'Preparando descarga...', 85, 'Listo...');
+
+  const html = `<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<title>INBURSA — ${title}</title>
+<style>
+body{margin:0;padding:0;font-family:Arial,sans-serif;background:white}
+.cover{background:${color};color:white;padding:40px;margin-bottom:20px}
+.cover h1{font-size:32px;font-weight:900;text-transform:uppercase;margin:0 0 6px}
+.cover p{font-size:13px;opacity:.8;margin:0}
+.content{padding:0 20px 20px;max-width:900px;margin:0 auto}
+@media print{.cover{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head><body>
+<div class="cover">
+  <h1>${title}</h1>
+  <p>Catálogo de Productos INBURSA 2026 · Páginas ${start}–${end} · ${total} páginas</p>
+  <p style="opacity:.6;font-size:11px;margin-top:4px">Grupo Financiero Inbursa · www.inbursa.com</p>
+</div>
+<div class="content">${imgs}</div>
+</body></html>`;
+
+  pdfBlob = new Blob([html], {type:'text/html;charset=utf-8'});
+
+  setTimeout(() => {
+    setModal('✅','¡Listo!',`"${title}" lista — ${total} páginas del catálogo original`,100,'Abre el archivo y usa Ctrl+P → Guardar como PDF');
+    document.getElementById('m-ok').style.display = 'flex';
+    document.getElementById('m-cancel').style.display = 'none';
+    document.getElementById('m-dl').style.background = color;
+    document.getElementById('m-bar').style.width = '100%';
+  }, 200);
+}
+
+function setModal(icon,title,sub,pct,step){
+  document.getElementById('m-icon').textContent = icon;
+  document.getElementById('m-title').textContent = title;
+  document.getElementById('m-sub').textContent = sub;
+  document.getElementById('m-bar').style.width = pct+'%';
+  document.getElementById('m-step').textContent = step;
+}
+function openModal(){ document.getElementById('pdf-modal').classList.add('open'); }
+function closeModal(){ document.getElementById('pdf-modal').classList.remove('open'); pdfBlob=null; }
+document.getElementById('m-dl').onclick = () => {
+  if(!pdfBlob) return;
+  const url = URL.createObjectURL(pdfBlob);
+  const a = document.createElement('a'); a.href=url; a.download=`INBURSA_${pdfName.replace(/\s+/g,'_')}.html`; a.click();
+  URL.revokeObjectURL(url);
+};
+
+function toggleMenu(){ document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sb-overlay').classList.toggle('open'); }
+function closeMenu(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sb-overlay').classList.remove('open'); }
+document.querySelectorAll('.nav-link').forEach(a => a.addEventListener('click', ()=>{ if(window.innerWidth<860) closeMenu(); }));
+
+// INIT
+buildSections();
+document.querySelectorAll('.cat-section').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
