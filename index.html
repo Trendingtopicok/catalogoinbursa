@@ -538,7 +538,7 @@ footer {
 <body>
 
 <button id="menu-btn" onclick="toggleMenu()">☰</button>
-<div id="version-badge" style="position:fixed;bottom:8px;right:8px;background:#222;color:#0f0;font-family:monospace;font-size:10px;padding:3px 7px;border-radius:4px;z-index:9999;opacity:0.7">v5-catalogo_inbursa</div>
+<div id="version-badge" style="position:fixed;bottom:8px;right:8px;background:#222;color:#0f0;font-family:monospace;font-size:10px;padding:3px 7px;border-radius:4px;z-index:9999;opacity:0.7">v6-catalogo_inbursa</div>
 <div id="sidebar-overlay" onclick="closeMenu()"></div>
 
 <nav id="sidebar">
@@ -768,8 +768,33 @@ function renderSection(id) {
   if (ph) ph.style.display = 'none';
   if (img) {
     img.style.display = 'block';
+    // Auto-fit: calculate zoom so the full page is visible
+    autoFitZoom(id);
     showPage(id, state[id].current);
   }
+}
+
+function autoFitZoom(id) {
+  // We need to know the image natural dimensions to calculate fit
+  // Use a temp image to get dimensions from first page
+  const pages = loadedData[id];
+  if (!pages || pages.length === 0) return;
+  const tmp = new Image();
+  tmp.onload = () => {
+    const container = document.getElementById('pd-' + id);
+    if (!container) return;
+    const containerW = container.clientWidth - 24; // padding
+    const containerH = container.clientHeight - 16;
+    const imgW = tmp.naturalWidth;
+    const imgH = tmp.naturalHeight;
+    // Calculate zoom % to fit both width and height
+    const zoomW = Math.floor((containerW / imgW) * 100);
+    const zoomH = Math.floor((containerH / imgH) * 100);
+    const fitZoom = Math.min(zoomW, zoomH, 100); // never more than 100% initially
+    zoomState[id] = Math.max(fitZoom, 30);
+    applyZoom(id);
+  };
+  tmp.src = pages[0].data;
 }
 
 function buildThumbs(id) {
