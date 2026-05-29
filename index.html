@@ -736,7 +736,7 @@ function loadSection(id) {
   if (!sec) return;
 
   const script = document.createElement('script');
-  script.src = `sec_${id}.js`;
+  script.src = `catalogo_inbursa/sec_${id}.js`;
   script.onload = () => {
     const key = `SEC_${id.toUpperCase()}`;
     loadedData[id] = window[key] || [];
@@ -744,7 +744,7 @@ function loadSection(id) {
     buildThumbs(id);
   };
   script.onerror = () => {
-    document.getElementById(`ph-${id}`).innerHTML = '<span style="color:#c00">Error cargando datos. Verifica que los archivos sec_*.js estén en la misma carpeta.</span>';
+    document.getElementById(`ph-${id}`).innerHTML = '<span style="color:#c00">Error cargando datos. Verifica que la carpeta catalogo_inbursa/ esté junto al index.html.</span>';
   };
   document.head.appendChild(script);
 }
@@ -866,7 +866,7 @@ const secObserver = new IntersectionObserver((entries) => {
 // ── COVER LOAD ──
 function loadCover() {
   const sc = document.createElement('script');
-  sc.src = 'cover.js';
+  sc.src = 'catalogo_inbursa/cover.js';
   sc.onload = () => {
     if (window.COVER_IMG) {
       document.getElementById('hero-bg').style.backgroundImage = `url(${window.COVER_IMG})`;
@@ -893,7 +893,7 @@ async function generatePDF(id, title, color) {
   if (!loadedData[id]) {
     await new Promise(resolve => {
       const sc = document.createElement('script');
-      sc.src = `sec_${id}.js`;
+      sc.src = `catalogo_inbursa/sec_${id}.js`;
       sc.onload = () => {
         const key = `SEC_${id.toUpperCase()}`;
         loadedData[id] = window[key] || [];
